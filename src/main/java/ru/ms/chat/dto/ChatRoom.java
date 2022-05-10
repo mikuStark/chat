@@ -19,7 +19,7 @@ import java.util.UUID;
 public class ChatRoom {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    private String id;
     //конкатенация senderId_recipientId, для каждой беседы мы сохраняем две сущности с одинаковыми chatId
     private String chatId;
     private String senderId;

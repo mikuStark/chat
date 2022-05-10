@@ -68,7 +68,7 @@ class ChatMessageServiceTest extends ConfigTest {
 
     @Test
     void findChatMessages() {
-        when(chatRoomService.getChatId(any(), any(), anyBoolean())).thenReturn(java.util.Optional.of("1_2"));
+        when(chatRoomService.getChatId(any(), any(), anyBoolean())).thenReturn("1_2");
         List<ChatMessage> messages = chatMessageService.findChatMessages("1", "1");
         assertThat(messages).isNotEmpty();
     }

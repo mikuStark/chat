@@ -6,6 +6,7 @@ import ru.ms.chat.dto.ChatRoom;
 import ru.ms.chat.repo.ChatRoomRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ChatRoomService {
@@ -13,29 +14,24 @@ public class ChatRoomService {
     @Autowired
     private ChatRoomRepository chatRoomRepository;
 
-    public Optional<String> getChatId(
+    public String getChatId(
             String senderId, String recipientId, boolean createIfNotExist) {
 
         return chatRoomRepository
                 .findBySenderIdAndRecipientId(senderId, recipientId)
-                .map(en -> {
-                    if (en.getChatId().isEmpty() || en.getChatId() == null) {
-                        return getFinalChatId(senderId, recipientId, createIfNotExist);
-                    } else {
-                        return en.getChatId();
-                    }
-                });
+                .map(ChatRoom::getChatId)
+                .orElse(getFinalChatId(senderId, recipientId, createIfNotExist));
     }
 
     private String getFinalChatId(String senderId, String recipientId, boolean createIfNotExist) {
         if(!createIfNotExist) {
             return null;
         }
-        String chatId =
-                String.format("%s_%s", senderId, recipientId);
+        String chatId = String.format("%s_%s", senderId, recipientId);
 
         ChatRoom senderRecipient = ChatRoom
                 .builder()
+                .id(UUID.randomUUID().toString())
                 .chatId(chatId)
                 .senderId(senderId)
                 .recipientId(recipientId)
@@ -43,6 +39,7 @@ public class ChatRoomService {
 
         ChatRoom recipientSender = ChatRoom
                 .builder()
+                .id(UUID.randomUUID().toString())
                 .chatId(chatId)
                 .senderId(recipientId)
                 .recipientId(senderId)

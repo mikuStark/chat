@@ -32,11 +32,12 @@ public class ChatMessageService {
 
     public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
 
-        Optional<String> chatId = chatRoomService.getChatId(senderId, recipientId, false);
+        String chatId = chatRoomService.getChatId(senderId, recipientId, false);
 
-        List<ChatMessage> messages = chatId.map(cId -> repository.findByChatId(cId)).orElse(new ArrayList<>());
+        List<ChatMessage> messages = repository.findByChatId(chatId);
+//                .orElse(new ArrayList<>());
 
-        if(!messages.isEmpty()) {
+        if(messages != null && !messages.isEmpty()) {
             repository.updateStatusFromDelivered(MessageStatus.DELIVERED, senderId, recipientId);
         }
 
