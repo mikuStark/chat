@@ -5,29 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.Date;
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "chat_message")
 public class ChatMessage {
 
-    @Id
-    private String id;
-    private String chatId;
-    private String senderId;
-    private String recipientId;
-    private String senderName;
-    private String recipientName;
+    private MessageType type;
     private String content;
-    private Date timestamp;
-
-    @Enumerated(EnumType.STRING)
-    private MessageStatus status;
+    private String sender;
+    public enum MessageType {
+        CHAT,
+        JOIN,
+        LEAVE
+    }
 
 }
